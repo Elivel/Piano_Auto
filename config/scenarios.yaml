@@ -1,0 +1,36 @@
+# Escenarios de ejemplo. Ajusta las URL y los selectores para que coincidan con el PDF entregado.
+scenarios:
+  - name: Validar título en Example Domain
+    steps:
+      - action: get
+        target: https://example.com
+      - action: assert_title_contains
+        value: Example Domain
+
+  - name: Ir a dominios de IANA
+    steps:
+      - action: get
+        target: https://example.com
+      - action: click
+        by: css
+        target: "a[href='https://www.iana.org/domains/example']"
+      - action: assert_url_contains
+        value: iana.org
+
+  - name: Completar formulario de demostración
+    steps:
+      - action: get
+        target: https://httpbin.org/forms/post
+      - action: type
+        by: css
+        target: "input[name='custname']"
+        value: Usuario QA
+      - action: type
+        by: css
+        target: "input[name='custtel']"
+        value: +56911111111
+      - action: click
+        by: css
+        target: "button[type='submit']"
+      - action: assert_url_contains
+        value: /post
