@@ -13,60 +13,44 @@
 
     <name>Automatizacion Piano</name>
 
-    <!-- ======================================================= -->
-    <!--  VERSIONES CENTRALES                                     -->
-    <!-- ======================================================= -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
 
-        <!-- SERENITY -->
-        <!-- Usar versión estable 2.4.50 con JUnit 4, sin Screenplay complicado -->
-        <serenity.version>2.4.50</serenity.version>
-        <serenity.junit5.version>2.4.50</serenity.junit5.version>
-        <serenity.maven.version>2.4.50</serenity.maven.version>
-
-        <!-- SELENIUM -->
         <selenium.version>4.19.0</selenium.version>
+        <junit.version>4.13.2</junit.version>
     </properties>
 
-    <!-- ======================================================= -->
-    <!--  DEPENDENCIAS                                            -->
-    <!-- ======================================================= -->
     <dependencies>
 
-        <!-- Serenity Screenplay -->
-        <dependency>
-            <groupId>net.serenity-bdd</groupId>
-            <artifactId>serenity-screenplay</artifactId>
-            <version>${serenity.version}</version>
-        </dependency>
-
-        <!-- Serenity Web + Selenium -->
-        <dependency>
-            <groupId>net.serenity-bdd</groupId>
-            <artifactId>serenity-core</artifactId>
-            <version>${serenity.version}</version>
-        </dependency>
-
-        <!-- El artefacto 'serenity-web' no está presente en todas las versiones.
-             Usamos 'serenity-core' y 'serenity-screenplay' junto con Selenium. -->
-
+        <!-- Selenium -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>${selenium.version}</version>
         </dependency>
 
-        <!-- Serenity JUnit (JUnit4 integration). Proyecto actual usa Serenity 2.x mejor con JUnit4 -->
+        <!-- Nota: Puedes añadir la dependencia 'selenium-devtools-v{major}' para emparejar CDP con tu versión de Chrome.
+             Si no estás usando API DevTools avanzadas puedes ignorar la advertencia. (El artefacto debe existir en Maven Central).
+             Ejemplo: org.seleniumhq.selenium:selenium-devtools-v142:${selenium.version} (si está publicado) -->
+
+        <!-- WebDriverManager para gestionar chromedriver automáticamente -->
         <dependency>
-            <groupId>net.serenity-bdd</groupId>
-            <artifactId>serenity-junit</artifactId>
-            <version>${serenity.version}</version>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>5.4.1</version>
         </dependency>
 
-        <!-- Assertions -->
+        <!-- JUnit 4 -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- AssertJ -->
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
@@ -76,42 +60,22 @@
 
     </dependencies>
 
-    <!-- ======================================================= -->
-    <!--  PLUGINS                                                 -->
-    <!-- ======================================================= -->
     <build>
         <plugins>
 
-            <!-- Plugin Serenity Maven -->
-            <plugin>
-                <groupId>net.serenity-bdd.maven.plugins</groupId>
-                <artifactId>serenity-maven-plugin</artifactId>
-                <version>${serenity.maven.version}</version>
-                <executions>
-                    <execution>
-                        <id>serenity-reports</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>aggregate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- Surefire para JUnit 5 -->
+            <!-- JUnit4 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.1.2</version>
                 <configuration>
-                    <useModulePath>false</useModulePath>
                     <includes>
                         <include>**/*Test.java</include>
                     </includes>
                 </configuration>
             </plugin>
 
-            <!-- Compilador Java -->
+            <!-- Compilador -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
@@ -119,6 +83,21 @@
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
                 </configuration>
+            </plugin>
+
+            <!-- Maven Surefire Report Plugin para generar reporte HTML -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>3.1.2</version>
+                <executions>
+                    <execution>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>

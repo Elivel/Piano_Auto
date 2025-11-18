@@ -1,1 +1,7 @@
-com\fisagrp\piano\task\AbrirPiano_NEW.class
+com\fisagrp\piano\ui\PianoPage.class
+com\fisagrp\piano\model\Nota.class
+com\fisagrp\piano\model\SecuenciaHimno.class
+com\fisagrp\piano\task\AbrirPiano.class
+com\fisagrp\piano\task\TocarNota.class
+com\fisagrp\piano\task\TocarSecuencia.class
+com\fisagrp\piano\ui\PianoPage$1.class

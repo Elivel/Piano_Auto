@@ -1,28 +1,19 @@
 package com.fisagrp.piano.task;
 
-import net.thucydides.core.annotations.Step;
-import net.serenitybdd.screenplay.Actor;
-import net.serenitybdd.screenplay.Task;
-import net.serenitybdd.screenplay.Tasks;
-import net.serenitybdd.screenplay.actions.Click;
-import net.serenitybdd.screenplay.targets.Target;
 import com.fisagrp.piano.model.Nota;
 import com.fisagrp.piano.ui.PianoPage;
+import org.openqa.selenium.WebDriver;
 
-public class TocarNota implements Task {
-    private final Nota nota;
+public class TocarNota {
+    private Nota nota;
+    private PianoPage pianoPage;
 
-    public TocarNota(Nota nota) {
+    public TocarNota(WebDriver driver, Nota nota) {
         this.nota = nota;
+        this.pianoPage = new PianoPage(driver);
     }
 
-    public static TocarNota de(Nota nota) {
-        return Tasks.instrumented(TocarNota.class, nota);
-    }
-
-    @Step("{0} toca la nota {0}")
-    public <T extends Actor> void performAs(T actor) {
-        Target tecla = PianoPage.teclaPara(nota);
-        actor.attemptsTo(Click.on(tecla));
+    public void ejecutar() throws InterruptedException {
+        pianoPage.tocarNota(nota);
     }
 }

@@ -4,24 +4,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SecuenciaHimno {
+    
     public static List<Nota> escenario1() {
-        return List.of(
-            Nota.SI, Nota.SI, Nota.DO, Nota.RE, Nota.RE, Nota.DO, Nota.SI, Nota.LA,
-            Nota.SOL, Nota.SOL, Nota.LA, Nota.SI, Nota.SI, Nota.LA, Nota.LA
-        );
+        List<Nota> notas = new ArrayList<>();
+        // SI SI DO RE RE DO SI LA SOL SOL LA SI SI LA LA
+        notas.add(Nota.SI);
+        notas.add(Nota.SI);
+        notas.add(Nota.DO);
+        notas.add(Nota.RE);
+        notas.add(Nota.RE);
+        notas.add(Nota.DO);
+        notas.add(Nota.SI);
+        notas.add(Nota.LA);
+        notas.add(Nota.SOL);
+        notas.add(Nota.SOL);
+        notas.add(Nota.LA);
+        notas.add(Nota.SI);
+        notas.add(Nota.SI);
+        notas.add(Nota.LA);
+        notas.add(Nota.LA);
+        return notas;
     }
-
+    
     public static List<Nota> escenario2() {
-        List<Nota> base = new ArrayList<>(escenario1());
-        List<Nota> doble = new ArrayList<>(base);
-        doble.addAll(base);
-        return doble;
+        List<Nota> notas = new ArrayList<>();
+        // Repetir escenario1 dos veces
+        notas.addAll(escenario1());
+        notas.addAll(escenario1());
+        return notas;
     }
-
+    
     public static List<Nota> escenario3() {
-        List<Nota> secuencia = new ArrayList<>();
-        secuencia.addAll(escenario2());
-        secuencia.addAll(escenario1());
-        return secuencia;
+        List<Nota> notas = new ArrayList<>();
+        // Escenario2 (x2) + Escenario1
+        notas.addAll(escenario2());
+        notas.addAll(escenario1());
+        return notas;
     }
 }

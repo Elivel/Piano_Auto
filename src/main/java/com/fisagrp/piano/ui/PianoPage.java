@@ -1,36 +1,55 @@
 package com.fisagrp.piano.ui;
 
 import com.fisagrp.piano.model.Nota;
-import net.serenitybdd.core.pages.PageObject;
-import net.thucydides.core.annotations.DefaultUrl;
-import net.serenitybdd.screenplay.Question;
-import net.serenitybdd.screenplay.targets.Target;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
+import org.openqa.selenium.ElementClickInterceptedException;
 
-@DefaultUrl("https://www.musicca.com/es/piano")
-public class PianoPage extends PageObject {
-    public static final Target TECLA_DO  = Target.the("Tecla DO")
-        .located(By.cssSelector("[data-note='1c']"));
+public class PianoPage {
+    private static final String URL = "https://www.musicca.com/es/piano";
+    private WebDriver driver;
 
-    public static final Target TECLA_RE  = Target.the("Tecla RE")
-        .located(By.cssSelector("[data-note='3d']"));
+    // Selectores CSS para cada nota
+    private static final By TECLA_DO  = By.cssSelector("[data-note='1c']");
+    private static final By TECLA_RE  = By.cssSelector("[data-note='1d']");
+    private static final By TECLA_MI  = By.cssSelector("[data-note='1e']");
+    private static final By TECLA_FA  = By.cssSelector("[data-note='1f']");
+    private static final By TECLA_SOL = By.cssSelector("[data-note='1g']");
+    private static final By TECLA_LA  = By.cssSelector("[data-note='3a']");
+    private static final By TECLA_SI  = By.cssSelector("[data-note='3b']");
 
-    public static final Target TECLA_MI  = Target.the("Tecla MI")
-        .located(By.cssSelector("[data-note='2e']"));
+    public PianoPage(WebDriver driver) {
+        this.driver = driver;
+    }
 
-    public static final Target TECLA_FA  = Target.the("Tecla FA")
-        .located(By.cssSelector("[data-note='2f']"));
+    public void abrirPagina() {
+        driver.get(URL);
+    }
 
-    public static final Target TECLA_SOL = Target.the("Tecla SOL")
-        .located(By.cssSelector("[data-note='2g']"));
+    public void tocarNota(Nota nota) throws InterruptedException {
+        By selector = obtenerSelectorPara(nota);
+        WebElement tecla = driver.findElement(selector);
+        // Esperar a que la tecla sea clickable
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.elementToBeClickable(selector));
 
-    public static final Target TECLA_LA  = Target.the("Tecla LA")
-        .located(By.cssSelector("[data-note='2a']"));
+            Actions actions = new Actions(driver);
+            actions.moveToElement(tecla).click().perform();
+        } catch (ElementClickInterceptedException e) {
+          
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", tecla);
+        }
+        Thread.sleep(50); // Pausa mínima para que se escuche la nota sin alargar el test
+    }
 
-    public static final Target TECLA_SI  = Target.the("Tecla SI")
-        .located(By.cssSelector("[data-note='2b']"));
-
-    public static Target teclaPara(Nota nota) {
+    private By obtenerSelectorPara(Nota nota) {
         switch (nota) {
             case DO:  return TECLA_DO;
             case RE:  return TECLA_RE;
