@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.fisagrp.piano.features.Escenario3HimnoCompletoTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 31.48 s -- in com.fisagrp.piano.features.Escenario3HimnoCompletoTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 31.51 s -- in com.fisagrp.piano.features.Escenario3HimnoCompletoTest
